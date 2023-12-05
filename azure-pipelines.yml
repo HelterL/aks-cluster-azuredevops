@@ -14,7 +14,7 @@ variables:
   key: 'azuredevops.tfstate'
 
 stages:
-  - stage: 'Instalando Terraform'
+  - stage: 'Instalando_Terraform'
     jobs:
       - job: 'instalandoterraform'
         steps:
