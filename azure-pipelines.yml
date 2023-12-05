@@ -3,7 +3,8 @@ trigger:
     include:
     - main
 
-pool: TestePoll
+pool:
+  vmImage: ubuntu-latest
 
 variables: 
   rsgroup: 'tfstate'
@@ -11,7 +12,7 @@ variables:
   storageaccount: 'storagedesafiotf' 
   containername: 'tfstate' 
   key: 'azuredevops.tfstate'
-  Build.SourcesDirectory: 'DesafioAquarela'
+
 stages:
   - stage: 'Instalando_Terraform'
     jobs:
