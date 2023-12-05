@@ -24,8 +24,35 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
+    workingDirectory: '$(Build.SourcesDirectory)'
+    backendType: 'azurerm'
+    ensureBackend: true
     backendServiceArm: 'DevServiceConnection'
     backendAzureRmResourceGroupName: '$(rsgroup)'
     backendAzureRmStorageAccountName: '$(storageaccount)'
     backendAzureRmContainerName: '$(containername)'
     backendAzureRmKey: '$(key)'
+
+- task: TerraformTaskV4@4
+  displayName: 'Validando'
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+    workingDirectory: '$(Build.SourcesDirectory)'
+
+- task: TerraformTaskV4@4
+  displayName: 'Terraform Plan'
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(Build.SourcesDirectory)'
+    environmentServiceName: '$(backServiceArm)'
+    commandOptions: '-out=tfplan'
+
+- task: TerraformTaskV4@4
+  displayName: 'Terraform Apply'
+  inputs:
+    command: 'apply'
+    workingDirectory: '$(Build.SourcesDirectory)'
+    environmentServiceName: '$(backServiceArm)'
+    commandOptions: '-auto-approve -input=false tfplan'
