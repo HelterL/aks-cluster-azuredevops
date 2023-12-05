@@ -16,7 +16,7 @@ stages:
   - stage: 'Instalando_Terraform'
     jobs:
       - job: 'instalandoterraform'
-        steps:
+        steps:  
         - task: TerraformTool@0
           displayName: 'Install Terraform'
           inputs:
