@@ -52,7 +52,7 @@ stages:
               command: 'validate'
               workingDirectory: '$(Build.SourcesDirectory)'
   
-  - stage: 'Plan'
+  - stage: 'Terrafom_Plan'
     jobs:
       - job: 'plan'
         steps:
@@ -65,7 +65,7 @@ stages:
             environmentServiceName: '$(backServiceArm)'
             commandOptions: '-out=tfplan'
   
-  - stage: 'Apply'
+  - stage: 'Terraform_Apply'
     jobs:
       - job: 'Apply'
         steps:
