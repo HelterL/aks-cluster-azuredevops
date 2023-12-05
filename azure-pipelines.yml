@@ -23,7 +23,7 @@ stages:
           inputs:
             terraformVersion: 'latest'
 
-  - stage: 'Init Terraform'
+  - stage: 'Init_Terraform'
     jobs:
       - job: 'terraforminit'
         steps:
