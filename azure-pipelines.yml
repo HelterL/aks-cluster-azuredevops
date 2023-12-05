@@ -1,28 +1,25 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-trigger: 
+trigger:
   branches:
     include:
-    - main    
+      - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
-variables:
-  rsgroup: 'tfstate'
-  storageaccountname: 'storagedesafiotf'
-  containername: 'tfstate'
-  key: 'azuredevops.tfstate'
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
 
-stages:
-  - stage: instalandoterraform
-    jobs:
-      - job: instalandoterraform
-        steps:
-        - task: TerraformInstaller@1
-          displayName: 'Instalando Terraform'
-          inputs:
-            terraformVersion: 'latest'
+- script: |
+    terraform init
+    terraform validate
+  displayName: 'Terraform Init and Validate'
+
+- script: terraform plan -out=tfplan -var="resource_group_name=$(resourceGroupName)" -var="location=$(location)"
+  displayName: 'Terraform Plan'
+
+- script: terraform apply -input=false tfplan
+  displayName: 'Terraform Apply'
+  condition: succeeded()
