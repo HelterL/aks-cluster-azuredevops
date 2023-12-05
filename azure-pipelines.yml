@@ -14,15 +14,6 @@ variables:
   key: 'azuredevops.tfstate'
 
 stages:
-  - stage: build_and_test
-    jobs:
-    - job: "show_subscription_and_show_current_dir"
-      steps:
-      - script: |
-          az login --service-principal -u  $(ARM_CLIENT_ID) -p $(ARM_CLIENT_SECRET) --tenant $(ARM_TENANT_ID) && az account list
-        displayName: 'show subscription'
-      - script: pwd && ls -ltra && env
-        displayName: 'show current dir'
   - stage: 'Instalando_Terraform'
     jobs:
       - job: 'instalandoterraform'
@@ -43,10 +34,7 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'init'
-            workingDirectory: '$(Build.SourcesDirectory)'
-            backendType: 'azurerm'
-            ensureBackend: true
-            backendServiceArm: 'DevServiceConnection'
+            backendServiceArm: '$(backServiceArm)'
             backendAzureRmResourceGroupName: '$(rsgroup)'
             backendAzureRmStorageAccountName: '$(storageaccount)'
             backendAzureRmContainerName: '$(containername)'
@@ -63,7 +51,6 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'validate'
-              workingDirectory: '$(Build.SourcesDirectory)'
   
   - stage: 'Terrafom_Plan'
     dependsOn: 
@@ -76,7 +63,6 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'plan'
-            workingDirectory: '$(Build.SourcesDirectory)'
             environmentServiceName: '$(backServiceArm)'
             commandOptions: '-out=tfplan'
   
@@ -90,6 +76,5 @@ stages:
           displayName: 'Terraform Apply'
           inputs:
             command: 'apply'
-            workingDirectory: '$(Build.SourcesDirectory)'
             environmentServiceName: '$(backServiceArm)'
             commandOptions: '-auto-approve -input=false tfplan'
