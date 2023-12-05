@@ -1,0 +1,42 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  rsgroup: 'tfstate'
+  storageaccountname: 'storagedesafiotf'
+  containername: 'tfstate'
+  key: 'azuredevops.tfstate'
+
+stages:
+  - stage: validandotf
+    jobs:
+      - job: validando
+        continueOnError: false
+        steps:
+          - task: TerraformInstaller@1
+            displayName: instalartf
+            inputs:
+              terraformVersion: 'latest'
+          - task: TerraformTaskV4@4
+            displayName: 
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'DevServiceConnection'
+              backendAzureRmResourceGroupName: '$(rsgroup)'
+              backendAzureRmStorageAccountName: '$(storageaccountname)'
+              backendAzureRmContainerName: '$(containername)'
+              backendAzureRmKey: '$(key)'
+          - task: TerraformTaskV4@4
+            displayName: Validando
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+                    
