@@ -16,29 +16,7 @@ variables:
 
 stages:
   - stage: validandotf
-    jobs:
-      - job: validando
-        continueOnError: false
-        steps:
-          - task: TerraformInstaller@1
-            displayName: instalartf
-            inputs:
-              terraformVersion: 'latest'
-          - task: TerraformTaskV4@4
-            displayName: 
-            inputs:
-              provider: 'azurerm'
-              command: 'init'
-              backendServiceArm: 'DevServiceConnection'
-              backendAzureRmResourceGroupName: '$(rsgroup)'
-              backendAzureRmStorageAccountName: '$(storageaccountname)'
-              backendAzureRmContainerName: '$(containername)'
-              backendAzureRmKey: '$(key)'
-          - task: TerraformTaskV4@4
-            displayName: Validando
-            inputs:
-              provider: 'azurerm'
-              command: 'validate'
+    
   - stage: tfdeploy
     condition: succeded('valindandotf')
     dependsOn: validandotf
