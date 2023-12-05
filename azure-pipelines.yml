@@ -13,46 +13,66 @@ variables:
   containername: 'tfstate' 
   key: 'azuredevops.tfstate'
 
-steps:
-- task: TerraformInstaller@1
-  displayName: 'Install Terraform'
-  inputs:
-    terraformVersion: 'latest'
+stages:
+  - stage: 'Instalando Terraform'
+    jobs:
+      - job: 'instalandoterraform'
+        steps:
+        - task: TerraformInstaller@1
+          displayName: 'Install Terraform'
+          inputs:
+            terraformVersion: 'latest'
 
-- task: TerraformTaskV4@4
-  displayName: 'Init Terraform'
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    workingDirectory: '$(Build.SourcesDirectory)'
-    backendType: 'azurerm'
-    ensureBackend: true
-    backendServiceArm: 'DevServiceConnection'
-    backendAzureRmResourceGroupName: '$(rsgroup)'
-    backendAzureRmStorageAccountName: '$(storageaccount)'
-    backendAzureRmContainerName: '$(containername)'
-    backendAzureRmKey: '$(key)'
-
-- task: TerraformTaskV4@4
-  displayName: 'Validando'
-  inputs:
-    provider: 'azurerm'
-    command: 'validate'
-    workingDirectory: '$(Build.SourcesDirectory)'
-
-- task: TerraformTaskV4@4
-  displayName: 'Terraform Plan'
-  inputs:
-    provider: 'azurerm'
-    command: 'plan'
-    workingDirectory: '$(Build.SourcesDirectory)'
-    environmentServiceName: '$(backServiceArm)'
-    commandOptions: '-out=tfplan'
-
-- task: TerraformTaskV4@4
-  displayName: 'Terraform Apply'
-  inputs:
-    command: 'apply'
-    workingDirectory: '$(Build.SourcesDirectory)'
-    environmentServiceName: '$(backServiceArm)'
-    commandOptions: '-auto-approve -input=false tfplan'
+  - stage: 'Init Terraform'
+    jobs:
+      - job: 'terraforminit'
+        steps:
+        - task: TerraformTaskV4@4
+          displayName: 'Init Terraform'
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(Build.SourcesDirectory)'
+            backendType: 'azurerm'
+            ensureBackend: true
+            backendServiceArm: 'DevServiceConnection'
+            backendAzureRmResourceGroupName: '$(rsgroup)'
+            backendAzureRmStorageAccountName: '$(storageaccount)'
+            backendAzureRmContainerName: '$(containername)'
+            backendAzureRmKey: '$(key)'
+  
+  - stage: 'Validando'
+    jobs:
+      - job: 'Validando'
+        steps:
+          - task: TerraformTaskV4@4
+            displayName: 'Validando'
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+              workingDirectory: '$(Build.SourcesDirectory)'
+  
+  - stage: 'Plan'
+    jobs:
+      - job: 'plan'
+        steps:
+        - task: TerraformTaskV4@4
+          displayName: 'Terraform Plan'
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            workingDirectory: '$(Build.SourcesDirectory)'
+            environmentServiceName: '$(backServiceArm)'
+            commandOptions: '-out=tfplan'
+  
+  - stage: 'Apply'
+    jobs:
+      - job: 'Apply'
+        steps:
+        - task: TerraformTaskV4@4
+          displayName: 'Terraform Apply'
+          inputs:
+            command: 'apply'
+            workingDirectory: '$(Build.SourcesDirectory)'
+            environmentServiceName: '$(backServiceArm)'
+            commandOptions: '-auto-approve -input=false tfplan'
