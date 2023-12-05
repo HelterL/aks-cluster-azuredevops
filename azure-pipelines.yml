@@ -6,4 +6,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-  script: echo "Hello World"
+stages:
+  - stage: teste
+    jobs:
+      - job: teste
+        steps:
+          - script: echo "Teste"
