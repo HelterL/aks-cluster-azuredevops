@@ -11,7 +11,7 @@ variables:
   storageaccount: 'storagedesafiotf' 
   containername: 'tfstate' 
   key: 'azuredevops.tfstate'
-
+  Build.SourcesDirectory: 'DesafioAquarela'
 stages:
   - stage: 'Instalando_Terraform'
     jobs:
