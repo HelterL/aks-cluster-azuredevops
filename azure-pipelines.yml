@@ -17,8 +17,8 @@ variables:
   containername: 'tfstate'
   key: 'azuredevops.tfstate'
 
-  steps:
-  - task: TerraformTaskV4@0
-    displayName: 'Instalando Terraform'
-    inputs:
-      terraformVersion: 'latest'
+steps:
+- task: TerraformTaskV4@0
+  displayName: 'Instalando Terraform'
+  inputs:
+    terraformVersion: 'latest'
