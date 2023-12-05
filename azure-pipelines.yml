@@ -17,10 +17,10 @@ stages:
     jobs:
       - job: 'instalandoterraform'
         steps:
-        - task: TerraformInstaller@1
+        - task: TerraformTool@0
           displayName: 'Install Terraform'
           inputs:
-            terraformVersion: 'latest'
+            version: '0.11.8'
 
   - stage: 'Init_Terraform'
     dependsOn: 
