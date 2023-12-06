@@ -46,12 +46,6 @@ stages:
             provider: 'azurerm'
             command: 'validate'
   
-  - stage: 'Terrafom_Plan'
-    dependsOn: 
-      - 'Init_Terraform'
-    jobs:
-      - job: 'plan'
-        steps:
         - task: TerraformTaskV4@4
           displayName: 'Terraform Plan'
           inputs:
