@@ -51,11 +51,5 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'plan'
-            backendServiceArm: '$(backServiceArm)'
-            backendAzureRmResourceGroupName: '$(rsgroup)'
-            backendAzureRmStorageAccountName: '$(storageaccount)'
-            backendAzureRmContainerName: '$(containername)'
-            backendAzureRmKey: '$(key)'         
-            commandOptions: '-out=tfplan'
-  
+            environmentServiceNameAzureRM: '$(backServiceArm)'
   
