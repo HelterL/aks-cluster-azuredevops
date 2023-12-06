@@ -23,7 +23,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     service_cidr = "10.0.4.0/24"
     dns_service_ip = "10.0.4.10"
     ebpf_data_plane = "cilium"
-    pod_cidr = "192.168.0.0/16"
     load_balancer_sku  = "standard"
     outbound_type      = "userAssignedNATGateway"
   }
