@@ -8,8 +8,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   automatic_channel_upgrade = "stable"
   http_application_routing_enabled = true 
   sku_tier = "Standard"
-  node_resource_group = "node-rg-akscluster"
-
+  node_resource_group = "node-rs"
   
   storage_profile {
     blob_driver_enabled = true
@@ -25,12 +24,13 @@ resource "azurerm_kubernetes_cluster" "aks" {
     network_plugin_mode = "Overlay"
     ebpf_data_plane = "cilium"
     pod_cidr = "192.168.0.0/16"
+    load_balancer_sku  = "standard"
   }
 
   default_node_pool {
     name                = "aksclusys"
     min_count           = 2
-    vnet_subnet_id = var.address_subnet_public
+    vnet_subnet_id = var.address_subnet_nat
     max_count           = 2
     vm_size             = "Standard_D2_v2"
     enable_auto_scaling = true

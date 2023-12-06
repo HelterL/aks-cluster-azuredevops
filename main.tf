@@ -40,6 +40,6 @@ module "aks" {
   source = "./aks"
   resource_group_location = module.resource_group.resource_group_location
   resource_group_name = module.resource_group.resource_group_name
-  address_subnet_public = module.vnet.address_subnet_public_id
   vnet = module.vnet.vnet
+  address_subnet_nat = module.vnet.address_subnet_nat
 }
