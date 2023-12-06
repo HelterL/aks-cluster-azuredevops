@@ -46,29 +46,4 @@ stages:
             provider: 'azurerm'
             command: 'validate'
   
-  - stage: 'Terrafom_Plan'
-    dependsOn: 
-      - 'Validando'
-    jobs:
-      - job: 'plan'
-        steps:
-        - task: TerraformTaskV4@4
-          displayName: 'Terraform Plan'
-          inputs:
-            provider: 'azurerm'
-            command: 'plan'
-            environmentServiceName: '$(backServiceArm)'
-            commandOptions: '-out=tfplan'
   
-  - stage: 'Terraform_Apply'
-    dependsOn: 
-      - 'Terrafom_Plan'
-    jobs:
-      - job: 'Apply'
-        steps:
-        - task: TerraformTaskV4@4
-          displayName: 'Terraform Apply'
-          inputs:
-            command: 'apply'
-            environmentServiceName: '$(backServiceArm)'
-            commandOptions: '-auto-approve -input=false tfplan'
