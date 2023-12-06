@@ -14,18 +14,18 @@ variables:
   key: 'azuredevops.tfstate'
 
 stages:
-  - stage: 'Instalando_Terraform'
+  - stage: 'iniciando_pipe_terraform'
     jobs:
       - job: 'instalandoterraform'
         steps:
         - task: TerraformInstaller@1
-          displayName: 'Install Terraform'
+          displayName: 'Instalando Terraform'
           inputs:
             terraformVersion: 'latest'
 
   - stage: 'Init_Terraform'
     dependsOn: 
-      - 'Instalando_Terraform'
+      - 'iniciando_pipe_terraform'
     jobs:
       - job: 'terraforminit'
         steps:
@@ -52,4 +52,10 @@ stages:
             provider: 'azurerm'
             command: 'plan'
             environmentServiceNameAzureRM: '$(backServiceArm)'
-  
+
+        - task: TerraformTaskV4@4
+          displayName: 'Terraform Apply'
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            environmentServiceNameAzureRM: '$(backServiceArm)'
