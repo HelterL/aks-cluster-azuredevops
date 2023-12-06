@@ -22,9 +22,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     network_plugin_mode = "Overlay"
     ebpf_data_plane = "cilium"
     pod_cidr = "192.168.0.0/16"
-    service_cidr = "10.0.4.0/24"
-    dns_service_ip = "10.0.4.10"
-    load_balancer_sku  = "standard"
   }
 
   default_node_pool {
