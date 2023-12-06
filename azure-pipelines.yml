@@ -7,10 +7,10 @@ pool:
   vmImage: ubuntu-latest
 
 variables: 
-  rsgroup: 'tfstate'
-  backServiceArm: 'DevServiceConnection' 
-  storageaccount: 'storagedesafiotf' 
-  containername: 'tfstate' 
+  rsgroup: $(RSGROUP)
+  backServiceArm: $(BACKSERVICEARM)
+  storageaccount: $(STORAGEACCOUNT)
+  containername: $(CONTAINERNAME)
   key: 'azuredevops.tfstate'
 
 stages:
