@@ -9,7 +9,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   http_application_routing_enabled = true 
   sku_tier = "Standard"
   node_resource_group = "node-rs"
-  
+    
   storage_profile {
     blob_driver_enabled = true
     disk_driver_enabled = true
@@ -22,6 +22,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     network_policy = "azure"
     service_cidr = "10.0.4.0/24"
     dns_service_ip = "10.0.4.10"
+    pod_cidr = "192.168.1.0/24"
     load_balancer_sku  = "standard"
   }
 
@@ -32,9 +33,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vnet_subnet_id = var.address_subnet_nat
     vm_size             = "Standard_D2_v2"
     enable_auto_scaling = true
-  }
-
+  }    
   identity {
     type = "SystemAssigned"
   }
+
+  
 }
