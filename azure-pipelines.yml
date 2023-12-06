@@ -46,4 +46,12 @@ stages:
             provider: 'azurerm'
             command: 'validate'
   
+        - task: TerraformTaskV4@4
+          displayName: 'Terraform Plan'
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            environmentServiceName: '$(backServiceArm)'
+            commandOptions: '-out=tfplan'
+  
   
