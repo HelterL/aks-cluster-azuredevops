@@ -39,18 +39,12 @@ stages:
             backendAzureRmStorageAccountName: '$(storageaccount)'
             backendAzureRmContainerName: '$(containername)'
             backendAzureRmKey: '$(key)'
-  
-  - stage: 'Validando'
-    dependsOn: 
-      - 'Init_Terraform'
-    jobs:
-      - job: 'Validando'
-        steps:
-          - task: TerraformTaskV4@4
-            displayName: 'Validando'
-            inputs:
-              provider: 'azurerm'
-              command: 'validate'
+        
+        - task: TerraformTaskV4@4
+          displayName: 'Validando'
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
   
   - stage: 'Terrafom_Plan'
     dependsOn: 
