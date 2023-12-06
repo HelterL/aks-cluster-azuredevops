@@ -19,19 +19,20 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   network_profile {
     network_plugin = "azure"
+    network_policy = "azure"
     service_cidr = "10.0.4.0/24"
     dns_service_ip = "10.0.4.10"
-    network_plugin_mode = "Overlay"
     ebpf_data_plane = "cilium"
     pod_cidr = "192.168.0.0/16"
     load_balancer_sku  = "standard"
+    outbound_type      = "userAssignedNATGateway"
   }
 
   default_node_pool {
     name                = "aksclusys"
     min_count           = 2
-    vnet_subnet_id = var.address_subnet_nat
     max_count           = 2
+    vnet_subnet_id = var.address_subnet_nat
     vm_size             = "Standard_D2_v2"
     enable_auto_scaling = true
   }
