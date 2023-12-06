@@ -19,9 +19,12 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   network_profile {
     network_plugin = "azure"
-    network_plugin_mode = "Overlay"
-    ebpf_data_plane = "cilium"
+    network_policy = "azure"
+    dns_service_ip = "10.0.4.0/10"
     pod_cidr = "192.168.0.0/16"
+    service_cidr = "10.0.4.0/24"
+    load_balancer_sku  = "standard"
+    outbound_type      = "userAssignedNATGateway"
   }
 
   default_node_pool {
