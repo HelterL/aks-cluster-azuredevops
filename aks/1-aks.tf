@@ -6,7 +6,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = var.resource_group_name
   kubernetes_version  = "1.28.3"
   automatic_channel_upgrade = "stable"
-  http_application_routing_enabled = true 
   sku_tier = "Standard"
   node_resource_group = "node-rs"
   
