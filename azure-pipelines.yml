@@ -40,11 +40,11 @@ stages:
             backendAzureRmContainerName: '$(containername)'
             backendAzureRmKey: '$(key)'
           
-          - task: TerraformTaskV4@4
-            displayName: 'Validando'
-            inputs:
-              provider: 'azurerm'
-              command: 'validate'
+        - task: TerraformTaskV4@4
+          displayName: 'Validando'
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
   
   - stage: 'Terrafom_Plan'
     dependsOn: 
@@ -57,18 +57,11 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'plan'
-            environmentServiceNameRM: '$(backServiceArm)'
+            backendServiceArm: '$(backServiceArm)'
+            backendAzureRmResourceGroupName: '$(rsgroup)'
+            backendAzureRmStorageAccountName: '$(storageaccount)'
+            backendAzureRmContainerName: '$(containername)'
+            backendAzureRmKey: '$(key)'         
             commandOptions: '-out=tfplan'
   
-  - stage: 'Terraform_Apply'
-    dependsOn: 
-      - 'Terrafom_Plan'
-    jobs:
-      - job: 'Apply'
-        steps:
-        - task: TerraformTaskV4@4
-          displayName: 'Terraform Apply'
-          inputs:
-            command: 'apply'
-            environmentServiceName: '$(backServiceArm)'
-            commandOptions: '-auto-approve -input=false tfplan'
+  
